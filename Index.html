@@ -4,68 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Ular Html</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            background-color: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-        }
-        #game {
-            display: grid;
-            grid-template-columns: repeat(20, 20px);
-            grid-template-rows: repeat(20, 20px);
-            gap: 1px;
-            background-color: #333;
-            margin-bottom: 20px;
-        }
-        .cell {
-            width: 20px;
-            height: 20px;
-            background-color: #000;
-        }
-        .snake {
-            background-color: #0f0;
-        }
-        .food {
-            background-color: #f00;
-        }
-        #score {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        .controls {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-        .row {
-            display: flex;
-            gap: 5px;
-        }
-        button {
-            width: 60px;
-            height: 60px;
-            background-color: #444;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        button:active {
-            background-color: #666;
-        }
-        button#pause {
-            width: 130px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="score">Score: 0</div>
@@ -82,106 +21,31 @@
             <button id="right">→</button>
         </div>
     </div>
-    <script>
-        const gameBoard = document.getElementById('game');
-        const scoreDisplay = document.getElementById('score');
-        const pauseButton = document.getElementById('pause');
-        const upButton = document.getElementById('up');
-        const downButton = document.getElementById('down');
-        const leftButton = document.getElementById('left');
-        const rightButton = document.getElementById('right');
-        const gridSize = 20;
-        const cells = [];
-        let snake = [42, 41, 40];
-        let direction = 1;
-        let food = 0;
-        let score = 0;
-        let interval;
-        let isPaused = false;
-        for (let i = 0; i < gridSize * gridSize; i++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            cells.push(cell);
-            gameBoard.appendChild(cell);
-        }
-        function startGame() {
-            clearInterval(interval);
-            snake = [42, 41, 40];
-            direction = 1;
-            score = 0;
-            placeFood();
-            updateScore();
-            isPaused = false;
-            pauseButton.textContent = "Pause";
-            interval = setInterval(moveSnake, 150);
-        }
-        function moveSnake() {
-            if (isPaused) return;
-            const head = snake[0];
-            const newHead = head + direction;
-            if (
-                (newHead % gridSize === 0 && direction === 1) ||
-                (head % gridSize === 0 && direction === -1) ||
-                newHead < 0 || 
-                newHead >= gridSize * gridSize || 
-                cells[newHead].classList.contains('snake')
-                ) {
-                alert('Game Over! Skor Anda: ' + score);
-                startGame();
-                return;
-            }
-            if (newHead === food) {
-                score++;
-                updateScore();
-                placeFood();
-            } else {
-                const tail = snake.pop();
-                cells[tail].classList.remove('snake');
-            }
-            snake.unshift(newHead);
-            cells[newHead].classList.add('snake');
-        }
-        function changeDirection(newDirection) {
-            if (
-                (newDirection === -1 && direction !== 1) || 
-                (newDirection === 1 && direction !== -1) ||
-                (newDirection === -gridSize && direction !== gridSize) || 
-                (newDirection === gridSize && direction !== -gridSize)
-            ) {
-                direction = newDirection;
-            }
-        }
-        function placeFood() {
-            do {
-                food = Math.floor(Math.random() * cells.length);
-            } while (cells[food].classList.contains('snake'));
-            cells.forEach(cell => cell.classList.remove('food'));
-            cells[food].classList.add('food');
-        }
-        function updateScore() {
-            scoreDisplay.textContent = `Score: ${score}`;
-        }
-        upButton.addEventListener('click', () => changeDirection(-gridSize));
-        downButton.addEventListener('click', () => changeDirection(gridSize));
-        leftButton.addEventListener('click', () => changeDirection(-1));
-        rightButton.addEventListener('click', () => changeDirection(1));
-        pauseButton.addEventListener('click', () => {
-            isPaused = !isPaused;
-            pauseButton.textContent = isPaused ? 'Resume' : 'Pause';
-        });
-        document.addEventListener('keydown', event => {
-            const key = event.keyCode;
-            if (key === 37) changeDirection(-1); 
-            else if (key === 38) changeDirection(-gridSize);
-            else if (key === 39) changeDirection(1); 
-            else if (key === 38)
-            changeDirection(-gridSize)
-            else if (key === 39)
-            changeDirection(1);
-            else if (key === 40)
-            changeDirection(gridSize)
-        });
-        startGame();
-    </script>
+    <script src="script.js"></script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Ular Html</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="score">Score: 0</div>
+    <div id="game"></div>
+
+    <div class="controls">
+        <button id="pause">Pause</button>
+        <div class="row">
+            <button id="up">↑</button>
+        </div>
+        <div class="row">
+            <button id="left">←</button>
+            <button id="down">↓</button>
+            <button id="right">→</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
